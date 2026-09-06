@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speicher</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: white;
+            background-color: #1e1e1e;
+        }
+
+        #delList {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <b>SAVE 1: </b>
+    <div id="loader1">EMPTY</div>
+    <hr><br>
+    <b>SAVE 2: </b>
+    <div id="loader2">EMPTY</div>
+    <hr><br>
+    <b>SAVE 3: </b>
+    <div id="loader3">EMPTY</div>
+    <hr><br>
+    <b>SAVE 4: </b>
+    <div id="loader4">EMPTY</div>
+    <hr><br>
+    <b>SAVE 5: </b>
+    <div id="loader5">EMPTY</div>
+    <input type="checkbox" id="highlighting" checked>
+    <div id="delList"></div>
+
+    <script src="exampleFileNames.js"></script>
+    <script>
+        const loader1 = document.getElementById('loader1');
+        const loader2 = document.getElementById('loader2');
+        const loader3 = document.getElementById('loader3');
+        const loader4 = document.getElementById('loader4');
+        const loader5 = document.getElementById('loader5');
+        const alleLoader = document.querySelectorAll('div[id*="loader"]');
+        let oneRound = false;
+        let lastOne;
+
+        function highlight(event){
+            if(document.getElementById('highlighting').checked){
+                event.style.color = 'blue';
+                event.style.transition = '1s';
+                setTimeout(() => {event.style.color = 'white';},1000);
+            }
+        }
+        
+        let speicher = {
+            1: 'EMPTY',
+            2: 'EMPTY',
+            3: 'EMPTY',
+            4: 'EMPTY',
+            5: 'EMPTY',
+        }
+
+        let texte = JSONFiles;
+        function randomText() {
+            const randomIndex = Math.floor(Math.random() * texte.length);
+            return texte[randomIndex];
+        }
+
+        let overwritten = [];
+
+        function load() {
+            if(oneRound === false && loader1.innerText === 'EMPTY'){
+                loader1.innerText = randomText();
+                highlight(loader1);
+            } else if(oneRound === false && loader1.innerText !== 'EMPTY' && loader2.innerText === 'EMPTY'){
+                loader2.innerText = randomText();
+                highlight(loader2);
+            } else if(oneRound === false && loader2.innerText !== 'EMPTY' && loader3.innerText === 'EMPTY'){
+                loader3.innerText = randomText();
+                highlight(loader3);
+            } else if(oneRound === false && loader3.innerText !== 'EMPTY' && loader4.innerText === 'EMPTY'){
+                loader4.innerText = randomText();
+                highlight(loader4);
+            } else if(oneRound === false && loader4.innerText !== 'EMPTY' && loader5.innerText === 'EMPTY'){
+                loader5.innerText = randomText();
+                highlight(loader5);
+            } else if(oneRound === false && loader5.innerText !== 'EMPTY'){
+                loader1.innerText = randomText();
+                oneRound = true;
+                lastOne = 1;
+                highlight(loader1);
+            } else if(oneRound === true && lastOne === 1){
+                loader2.innerText = randomText();
+                overwritten.push(loader2.innerText);
+                lastOne = 2;
+                highlight(loader2);
+            } else if(oneRound === true && lastOne === 2){
+                loader3.innerText = randomText();
+                overwritten.push(loader3.innerText);
+                lastOne = 3;
+                highlight(loader3);
+            } else if(oneRound === true && lastOne === 3){
+                loader4.innerText = randomText();
+                overwritten.push(loader4.innerText);
+                lastOne = 4;
+                highlight(loader4);
+            } else if(oneRound === true && lastOne === 4){
+                loader5.innerText = randomText();
+                overwritten.push(loader5.innerText);
+                lastOne = 5;
+                highlight(loader5);
+            } else if(oneRound === true && lastOne === 5){
+                loader1.innerText = randomText();
+                overwritten.push(loader1.innerText);
+                lastOne = 1;
+                highlight(loader1);
+            } else {
+                alert('FEHLER');
+            }
+            document.getElementById('delList').innerText = overwritten.join(`\n`);
+            document.getElementById('delList').scrollTo(0,document.getElementById('delList').scrollHeight);
+            if(overwritten.length >= 250){
+                overwritten.splice(0,1);
+            }
+        }
+
+        setInterval(load,500);
+    </script>
+</body>
+
+</html>
