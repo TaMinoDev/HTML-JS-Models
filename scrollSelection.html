@@ -9,13 +9,16 @@
         body {
             width: 100%;
             min-height: 100vh;
+            overflow: hidden;
+            padding: 10px;
         }
 
         .choosenDiv {
-            width: 250px;
+            width: 100%;
             background-color: rgb(175, 175, 175);
             border-radius: 10px;
-            min-height: 50px;
+            height: 60px;
+            min-height: 55px;
             text-align: center;
             font-weight: bold;
             color: black;
@@ -28,10 +31,11 @@
         }
 
         .optionNext {
-            width: 250px;
+            width: 100%;
             background: linear-gradient(#ffffffff,#d3d3d3);
             border-radius: 0px 0px 10px 10px;
-            min-height: 50px;
+            height: 60px;
+            min-height: 55px;
             text-align: center;
             font-weight: bold;
             color: black;
@@ -44,10 +48,11 @@
         }
 
         .optionBefor {
-            width: 250px;
+            width: 100%;
             background: linear-gradient(#d3d3d3,#ffffffff);
             border-radius: 10px 10px 0px 0px;
-            min-height: 50px;
+            height: 60px;
+            min-height: 55px;
             text-align: center;
             font-weight: bold;
             color: black;
@@ -62,6 +67,11 @@
         .main {
             position: fixed;
             transition: 2s;
+            min-width: 250px;
+            min-height: 50px;
+            width: auto;
+            height: auto;
+            display: contents;
         }
     </style>
 </head>
