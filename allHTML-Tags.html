@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tags known to me</title>
+</head>
+<body>
+    <code></code>
+    <script>
+        const all = [
+            "!DOCTYPE",
+            "html",
+            "head",
+            "title",
+            "base",
+            "link",
+            "meta",
+            "style",
+            "body",
+            "article",
+            "section",
+            "nav",
+            "aside",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "hgroup",
+            "header",
+            "footer",
+            "address",
+            "main",
+            "div",
+            "p",
+            "hr",
+            "pre",
+            "blockquote",
+            "ol",
+            "ul",
+            "li",
+            "menu",
+            "dl",
+            "dt",
+            "dd",
+            "figure",
+            "figcaption",
+            "a",
+            "em",
+            "i",
+            "strong",
+            "b",
+            "small",
+            "cite",
+            "q",
+            "dfn",
+            "abbr",
+            "data",
+            "time",
+            "code",
+            "var",
+            "samp",
+            "kbd",
+            "sub",
+            "sup",
+            "u",
+            "mark",
+            "details",
+            "ruby",
+            "rt",
+            "rp",
+            "rb",
+            "rtc",
+            "bdi",
+            "bdo",
+            "span",
+            "br",
+            "wbr",
+            "del",
+            "ins",
+            "s",
+            "img",
+            "picture",
+            "source",
+            "iframe",
+            "embed",
+            "object",
+            "param",
+            "video",
+            "audio",
+            "track",
+            "area",
+            "map",
+            "svg",
+            "math",
+            "table",
+            "caption",
+            "col",
+            "colgroup",
+            "tbody",
+            "thead",
+            "tfoot",
+            "td",
+            "th",
+            "tr",
+            "form",
+            "fieldset",
+            "label",
+            "legend",
+            "input",
+            "datalist",
+            "button",
+            "select",
+            "option",
+            "optgroup",
+            "textarea",
+            "output",
+            "progress",
+            "meter",
+            "script",
+            "noscript",
+            "canvas",
+            "template",
+            "summary",
+            "dialog"
+        ];
+
+        const oneTag = ["!DOCTYPE","input","meta"];
+        const no = ["!DOCTYPE","head","html","link","style","script","noscript",""]
+
+        window.onload = () => {
+            all.forEach(e => {
+                if(!oneTag.includes(e)) {
+                    document.querySelector('code').innerText += `\n<${e}>${e}-Tag</${e}>`;
+                    if(!no.includes(e)) {
+                        document.body.innerHTML += `<${e}>${e}-Tag</${e}>`;
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>
+<!-- Will look a bit crazy -->
