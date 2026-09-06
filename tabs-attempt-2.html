@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabs 2.0</title>
+</head>
+<body>
+    <div id="tabBar"></div>
+    <div id="tabDiv">
+        <!-- Content of the Tabs will appier -->
+    </div>
+    <script>
+        const tabDiv = document.getElementById('tabDiv');
+        const tabBar = document.getElementById('tabBar');
+        let tempFunction;
+
+        const tabStorage = {
+            "0": ["Homepage","<h2>WOW</h2><p>If you can read that... you don't need glasses</p>"],
+            "1": ["Second page","<br><hr><span>You may Now pass the border into an Infinite Amount of Tabs!</span>"]
+        }
+
+        function generateTabs() {
+            tabBar.innerHTML = '';
+            for(t in tabStorage) {
+                tabBar.innerHTML += `<button class="tab" data-choosen="false" ondblclick="deleteTab('${t}');" onclick="openTab('${t}')">${tabStorage[t][0]}</button>`;
+            }
+            tabBar.innerHTML += `<button class="tab" onclick="addTab()">+</button>`;
+            if(tabStorage["0"]) {
+                openTab(0);
+            } else {
+                tabDiv.innerHTML = `<h1>Create New Tabs by clicking on the + symbol</h1>`;
+            }
+        }
+
+        function openTab(summary = 0) {
+            tabDiv.innerHTML = tabStorage[summary][1];
+        }
+
+        function addTab() {
+            let name = prompt('Name of the tab (May not be already use)','New Tab');
+            let content;
+            alert('Tab created');
+            content = prompt('Content of your Tabs');
+            tempFunction = () => {
+                let lastone = 0;
+                let free = [];
+                if(JSON.stringify(tabStorage) !== '{}'){
+                    for(let i in tabStorage) {
+                        lastone = Number(i);
+                    }
+                }
+                console.log(lastone+1);
+                if(lastone !== 0) {
+                    for(let i = 0; i <= Number(lastone); i++) {
+                        if(tabStorage[String(1)] === undefined) {
+                            free.push(i);
+                            console.log('found: ',i);
+                        } else {
+                            console.log()
+                        }
+                        console.log(i);
+                    }
+                }
+                if(free.length === 0 && lastone !== 0) {
+                    lastone = lastone+1;
+                    console.log('No free Space found: ' + lastone);
+                } else {
+                    lastone = free[0];
+                    console.log(`free space: ${lastone}`);
+                }
+                return String(lastone);
+            }
+            tabStorage[tempFunction()] = [name,content];
+            generateTabs();
+        }
+
+        function listTabs() {
+            let group = [];
+            for(index in tabStorage) {
+                group.push(tabStorage[index][0]);
+            }
+            console.log(group);
+            generateTabs();
+        }
+
+        function deleteTab(index) {
+            if(confirm(`Do you realy want to delete this tab? "${tabStorage[index][0]}"`)) {
+                delete tabStorage[index];
+                generateTabs();
+            }
+        }
+
+        generateTabs();
+    </script>
+</body>
+</html>
