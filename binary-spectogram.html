@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>binary spectogram</title>
+    <style>
+        td {
+            border: 1px solid black;
+            min-width: 150px;
+            min-height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr><td>Open the Console and type "convert(" binary (8-bit) ")"</td></tr>
+        </tbody>
+    </table>
+    <script>
+        const tbody = document.querySelector('tbody');
+        let bit = 8;
+        let audioContext = null;
+        let audioReadyPromise = null;
+
+        function getAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+
+        function ensureAudioReady() {
+            const ctx = getAudioContext();
+            if (ctx.state === 'suspended') {
+                if (!audioReadyPromise) {
+                    audioReadyPromise = ctx.resume().catch(() => {});
+                }
+                return audioReadyPromise;
+            }
+            return Promise.resolve();
+        }
+
+        function scheduleBit(bitValue, startTime) {
+            const ctx = getAudioContext();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, startTime);
+
+            gainNode.gain.setValueAtTime(bitValue === 1 ? 0.7 : 0.0, startTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.12);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            oscillator.start(startTime);
+            oscillator.stop(startTime + 0.12);
+        }
+
+        function convert(text) {
+            tbody.innerHTML = '';
+
+            const data = text.match(new RegExp(`.{1,${bit}}`, 'g')) || [];
+            const rowDelayMs = 700;
+            const bitDelayMs = 0.12;
+
+            data.forEach((chunk, rowIndex) => {
+                let row = `<tr id="row_${rowIndex + 1}">`;
+                const bitValues = [];
+
+                chunk.split('').forEach((el) => {
+                    let color = 'black';
+                    let bgColor = 'white';
+                    bitValues.push(el);
+
+                    if (el === '1') {
+                        color = 'white';
+                        bgColor = 'black';
+                    }
+
+                    row += `<td style="color: ${color}; background-color: ${bgColor}">${el}</td>`;
+                });
+
+                row += '</tr>';
+
+                setTimeout(() => {
+                    tbody.insertAdjacentHTML('beforeend', row);
+                    const lastRow = tbody.querySelector('tr:last-child');
+                    if (lastRow) {
+                        lastRow.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    }
+
+                    ensureAudioReady().then(() => {
+                        const startTime = getAudioContext().currentTime + 0.05;
+                        bitValues.forEach((bin, index) => {
+                            scheduleBit(Number(bin), startTime + index * bitDelayMs);
+                        });
+                    });
+                }, rowDelayMs * (rowIndex + 1));
+            });
+        }
+
+        window.addEventListener('pointerdown', () => {
+            ensureAudioReady();
+        }, { once: true });
+
+        // Example:
+        // convert('101010101010');
+        // Idea, convert funtion: TaMinoDev, Sound things: Gemini
+    </script>
+</body>
+</html>
