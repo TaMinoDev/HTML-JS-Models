@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Auswahl</title>
+    <style>
+        body {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .choosenDiv {
+            width: 250px;
+            background-color: rgb(175, 175, 175);
+            border-radius: 10px;
+            min-height: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: black;
+            font-family: sans-serif;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            font-size: 50px;
+            margin: 5px;
+        }
+
+        .optionNext {
+            width: 250px;
+            background: linear-gradient(#ffffffff,#d3d3d3);
+            border-radius: 0px 0px 10px 10px;
+            min-height: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: black;
+            font-family: sans-serif;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            font-size: 50px;
+            margin: 5px;
+        }
+
+        .optionBefor {
+            width: 250px;
+            background: linear-gradient(#d3d3d3,#ffffffff);
+            border-radius: 10px 10px 0px 0px;
+            min-height: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: black;
+            font-family: sans-serif;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            font-size: 50px;
+            margin: 5px;
+        }
+
+        .main {
+            position: fixed;
+            transition: 2s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <span class="optionNext" id="nextOptionDiv">Text</span>
+        <br>
+        <br>
+        <br>
+        <br>
+        <span class="choosenDiv" id="choosenDiv">Text</span>
+        <br>
+        <br>
+        <br>
+        <br>
+        <span class="optionBefor" id="beforOptionDiv">Text</span>
+    </div>
+    <script src="exampleFileNames.js"></script>
+    <script>
+        const nextDiv = document.getElementById('nextOptionDiv');
+        const choosenDiv = document.getElementById('choosenDiv');
+        const beforDiv = document.getElementById('beforOptionDiv');
+
+        
+        let options = JSON.parse(JSON.stringify(JSONFiles));
+        let choosen = 0;
+        let next = choosen + 1;
+        let befor = choosen - 1;
+
+        function change(input) {
+            let param = input.deltaY / 120;
+            /*console.log({
+                "choosen": choosen,
+                "param": param,
+            });*/
+            choosen = choosen + param;
+            if (choosen < 0) {
+                choosen = 0;
+            } else if (choosen > options.length - 1) {
+                choosen = options.length - 1;
+            }
+
+            next = choosen + 1;
+            befor = choosen - 1;
+
+            console.log({
+                "befor": befor,
+                "next": next
+            });
+
+            if(next == options.length){
+                next = ' ';
+                nextDiv.innerText = next;
+            } else {
+                nextDiv.innerText = options[next];
+            }
+
+            if(befor == -1){
+                befor = ' ';
+                beforDiv.innerText = befor;
+            } else {
+                beforDiv.innerText = options[befor];
+            }
+
+            choosenDiv.innerText = options[choosen];
+            // document.querySelector('.main').style.left = next*10 + 'px';
+            // document.querySelector('.main').style.top = befor*10 + 'px';
+        }
+
+        document.body.addEventListener("mousewheel", change);
+    </script>
+</body>
+
+</html>
