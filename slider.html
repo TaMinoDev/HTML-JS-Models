@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider - DEBUG</title>
+    <style>
+        #sliderDiv {
+            border: 1px solid black;
+            height: 250px;
+            width: auto;
+            min-width: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+        }
+
+        #sliderDiv canvas {
+            max-width: 100%;
+            max-height: 100%;
+            background-color: grey;
+            object-fit: contain;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="sliderDiv" data-id="null" data-src="title_pic1.png,art2.png,art3.png" data-index="0">
+        <button onclick="back(this.parentElement.dataset.id)">&LeftArrow;</button>
+        <canvas style="width: auto; height: auto;" id="canvas"></canvas>
+        <button onclick="next(this.parentElement.dataset.id)">&RightArrow;</button>
+    </div>
+    <div id="sliderDiv" data-id="null" data-src="art4.png,art5.png,art6.png" data-index="0">
+        <button onclick="back(this.parentElement.dataset.id)">&LeftArrow;</button>
+        <canvas style="width: auto; height: auto;" id="canvas"></canvas>
+        <button onclick="next(this.parentElement.dataset.id)">&RightArrow;</button>
+    </div>
+    <div id="sliderDiv" data-id="null" data-src="art7.png,art8.png,art9.png" data-index="0">
+        <button onclick="back(this.parentElement.dataset.id)">&LeftArrow;</button>
+        <canvas style="width: auto; height: auto;" id="canvas"></canvas>
+        <button onclick="next(this.parentElement.dataset.id)">&RightArrow;</button>
+    </div>
+    <script>
+        window.onload = () => {
+            let index = 1;
+            document.querySelectorAll('#sliderDiv').forEach(div => {
+                div.setAttribute('data-id',index.toString().padStart(3,'0'));
+                index++;
+                load(div.dataset.id);
+            });
+        }
+
+        window.onresize = () => {
+            document.querySelectorAll('#sliderDiv').forEach(div => {
+                load(div.dataset.id);
+            });
+        }
+
+        const back = (input) => {
+            const div = document.querySelector('div[data-id="' + input + '"]');
+            let index = Number(div.dataset.index);
+            const urls = div.dataset.src.split(',');
+            if(index === 0) {
+                div.dataset.index = urls.length-1;
+            } else {
+                div.dataset.index = index-1;
+            }
+            console.log(div.dataset.index);
+            load(input);
+        }
+
+        const next = (input) => {
+            const div = document.querySelector('div[data-id="' + input + '"]');
+            let index = Number(div.dataset.index);
+            const urls = div.dataset.src.split(',');
+            if(index === urls.length-1) {
+                div.dataset.index = 0;
+            } else {
+                div.dataset.index = index+1;
+            }
+            console.log(div.dataset.index);
+            load(input);
+        }
+
+        const load = (input) => {
+            const div = document.querySelector('div[data-id="' + input + '"]');
+            const canvas = div.querySelector('#canvas');
+            const ctx = canvas.getContext('2d');
+            const urls = div.dataset.src.split(',');
+            let index = Number(div.dataset.index);
+
+            console.log({
+                "div": div,
+                "urls": urls,
+                "index": index
+            });
+
+            const img = new Image();
+            img.src = `resources/pictures/${urls[index]}`;
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                canvas.style.width = canvas.width;
+                canvas.style.height = canvas.height;
+                ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                console.log(urls[index]);
+            }
+        }
+    </script>
+</body>
+</html>
