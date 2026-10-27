@@ -36,4 +36,8 @@ codes where used to train and try out new ideas.
 - My Seconds attempt to programm Tabs
 - My First attempt was like 2 years ago and failed so I made another one
 
+## `slider.html`
+- First Try making a slide-show where you can't just copy or download the used Images
+- To be honest the Styling is not done yet
+
 Thanks for Interessting, feel free to join the Discussions...
