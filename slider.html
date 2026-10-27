@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-    <div id="sliderDiv" data-id="null" data-src="title_pic1.png,art2.png,art3.png" data-index="0">
+    <div id="sliderDiv" data-id="null" data-src="art10.png,art2.png,art3.png" data-index="0">
         <button onclick="back(this.parentElement.dataset.id)">&LeftArrow;</button>
         <canvas style="width: auto; height: auto;" id="canvas"></canvas>
         <button onclick="next(this.parentElement.dataset.id)">&RightArrow;</button>
@@ -97,7 +97,7 @@
             });
 
             const img = new Image();
-            img.src = `resources/pictures/${urls[index]}`;
+            img.src = `pictures/${urls[index]}`;
             img.onload = () => {
                 canvas.width = img.width;
                 canvas.height = img.height;
